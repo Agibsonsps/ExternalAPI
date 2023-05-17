@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    tbody {text-align: center;}
+    th, td {padding: 5px; text-align: left;}
+  </style>
+  <title>Music Albums Search</title>
+  <script>
+    function updateSortCriteria(criteria) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort', criteria);
+      window.location.href = url.href;
+    }
+  </script>
+</head>
+<body>
+<style>
+  h1 {text-align: center; padding: 100px; text-colour: #123456;}
+  body {padding: 5px; text-align: center;}
+  th {padding: 5px; text-align: center;}
+  table {margin-left: auto; margin-right: auto; text-align: center;}
+</style>
+<h1>Albums for {{ artist }}</h1>
+<div>
+  <button onclick="updateSortCriteria('album_name')">Sort by Album Name</button>
+  <button onclick="updateSortCriteria('year_released')">Sort by Year Released</button>
+</div>
+<table>
+  <thead>
+    <th>
+      <a href="?sort=album_name">Album Name</a>
+    </th>
+    <th>
+      <a href="?sort=year_released">Year Released</a>
+    </th>
+  </thead>
+  <tbody>
+    {% for album in albums|sort(attribute=sort_by) %}
+    <tr>
+      <td>{{ album.strAlbum }}</td>
+      <td>{{ album.intYearReleased }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a style="text-align: center; color: #123456; padding: 100; display: inline-block;" href="/">Search Another Artist</a>
+</body>
+</html>
