@@ -6,42 +6,47 @@
     th, td {padding: 5px; text-align: left;}
   </style>
   <title>Music Albums Search</title>
-  <script>
-    function updateSortCriteria(criteria) {
-      var url = new URL(window.location.href);
-      url.searchParams.set('sort', criteria);
-      window.location.href = url.href;
-    }
-  </script>
 </head>
 <body>
 <style>
-  h1 {text-align: center; padding: 100px; }
+  h1 {text-align: center; padding: 100px; text-colour: #123456;}
   body {padding: 5px; text-align: center;}
   th {padding: 5px; text-align: center;}
   table {margin-left: auto; margin-right: auto; text-align: center;}
 </style>
+
 <h1>Albums for {{ artist }}</h1>
-<div>
-  <button onclick="updateSortCriteria('album_name')">Sort by Album Name</button>
-  <button onclick="updateSortCriteria('year_released')">Sort by Year Released</button>
-</div>
+<form action = "/" method = "post">
+    <button type="submit" name = "reverse" value=True >Reverse Sort</button>
+    <button type="submit" name = "reverse" value=False >Normal Sort</button>
+  </form>
 <table>
+
   <thead>
     <th>
-      <a href="?sort=album_name">Album Name</a>
+      <a>Album Name</a>
     </th>
     <th>
-      <a href="?sort=year_released">Year Released</a>
+      <a>Year Released</a>
     </th>
   </thead>
   <tbody>
-    {% for album in albums|sort(attribute=sort_by) %}
+    {% if sort == 'strAlbum' %}
+    {% for album in albums|sort(attribute= 'strAlbum') %}
+    <tr>
+      <td>{{ album.strAlbum }}</td>
+      <td>{{ album.intYearReleased }}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    {% else %}
+    {% for album in albums|sort(reverse=reverse, attribute= 'intYearReleased') %}
     <tr>
       <td>{{ album.strAlbum }}</td>
       <td>{{ album.intYearReleased }}</td>
     </tr>
     {% endfor %}
+    {% endif %}
   </tbody>
 </table>
 <a style="text-align: center; color: #123456; padding: 100; display: inline-block;" href="/">Search Another Artist</a>

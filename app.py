@@ -9,11 +9,21 @@ app = Flask(__name__)
 def index():
     if request.method == 'POST':
         artist_name = request.form['artist']
+        sort = request.form["sort"]
+        print(sort)
         albums = search_albums(artist_name)
         save_albums_to_db(artist_name, albums)
-        return render_template('results.html', artist=artist_name, albums=albums)
+        return render_template('results.html', artist=artist_name, albums=albums, sort=sort)
     return render_template('index.html')
 
+
+@app.route('/results', methods=['GET', 'POST'])
+def results():
+    if request.method == 'POST':
+        reverse = request.form['reverse']
+        print(reverse)
+        return render_template('results.html', reverse=reverse)
+    return render_template('index.html')
 
 def search_albums(artist_name):
     API_KEY = '523532'
