@@ -13,7 +13,7 @@ def index():
         print(sort)
         albums = search_albums(artist_name)
         save_albums_to_db(artist_name, albums)
-        return render_template('results.html', artist=artist_name, albums=albums, sort=sort)
+        return render_template('results.html', artist=artist_name, albums=albums, sort=sort, reverse=True)
     return render_template('index.html')
 
 
@@ -44,6 +44,7 @@ def save_albums_to_db(artist_name, albums):
         c.execute("INSERT INTO albums VALUES (?,?,?)", (artist_name, album['strAlbum'], album['intYearReleased']))
     conn.commit()
     conn.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)

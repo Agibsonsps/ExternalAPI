@@ -32,11 +32,10 @@
   </thead>
   <tbody>
     {% if sort == 'strAlbum' %}
-    {% for album in albums|sort(attribute= 'strAlbum') %}
+    {% for album in albums|sort(reverse= reverse, attribute= 'strAlbum') %}
     <tr>
       <td>{{ album.strAlbum }}</td>
       <td>{{ album.intYearReleased }}</td>
-        {% endif %}
     </tr>
     {% endfor %}
     {% else %}
