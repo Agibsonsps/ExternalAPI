@@ -10,20 +10,16 @@ def index():
     if request.method == 'POST':
         artist_name = request.form['artist']
         sort = request.form["sort"]
-        print(sort)
         albums = search_albums(artist_name)
         save_albums_to_db(artist_name, albums)
-        return render_template('results.html', artist=artist_name, albums=albums, sort=sort, reverse=True)
+        reverse = False
+        if "reverse" in request.form and request.form["reverse"] == "True":
+            reverse = True
+        if "reverse" in request.form and request.form["reverse"] == "False":
+            reverse = False
+        return render_template('results.html', artist=artist_name, albums=albums, sort=sort, reverse=reverse)
     return render_template('index.html')
 
-
-@app.route('/results', methods=['GET', 'POST'])
-def results():
-    if request.method == 'POST':
-        reverse = request.form['reverse']
-        print(reverse)
-        return render_template('results.html', reverse=reverse)
-    return render_template('index.html')
 
 def search_albums(artist_name):
     API_KEY = '523532'
@@ -41,7 +37,18 @@ def save_albums_to_db(artist_name, albums):
                  (artist TEXT, album TEXT, year INTEGER)''')
 
     for album in albums:
-        c.execute("INSERT INTO albums VALUES (?,?,?)", (artist_name, album['strAlbum'], album['intYearReleased']))
+        artist = artist_name
+        album_name = album['strAlbum']
+        year = album['intYearReleased']
+
+        c.execute("INSERT INTO albums VALUES (?,?,?)", (artist, album_name, year))
+        print(c.fetchone())
+
+        if not c.fetchone():
+            c.execute("INSERT INTO albums VALUES (?,?,?)", (artist, album_name, year))
+
+
+
     conn.commit()
     conn.close()
 

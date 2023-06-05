@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Music Albums Search By Andrew</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 <style>
@@ -13,8 +14,10 @@
     <form action = "/" method = "post">
     <label for="artist">Artist Name:</label>
     <input type="text" name="artist" required>
-        <button type="submit" name = "sort" value="strAlbum">Search By Name</button>
-        <button type="submit" name = "sort" value="intYearReleased">Search By Year</button>
+        <button type="submit" name = "sort" value="intYearReleased">Submit</button>
+        <input type="hidden" name="sort" value="{{ sort }}">
+        <input type="hidden" name="artist" value="{{ artist }}">
+        <input type="hidden" name="reverse" value="{{ reverse }}">
     </form>
 </body>
 </html>
